@@ -1,3 +1,5 @@
 #!/bin/sh
 
-drush uli 2>/dev/null
+ULI=`drush uli 2>/dev/null`
+
+echo "$ULI?destination=/"
