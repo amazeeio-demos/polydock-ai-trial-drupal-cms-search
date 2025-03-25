@@ -1,0 +1,12 @@
+{
+  "name": "drupal/amazeeio_umami_search",
+  "description": "Adds Amazee.io AI search to the Umami demo.",
+  "type": "drupal-recipe",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "drupal/core": ">=10.4",
+    "drupal/ai_provider_amazeeio": "^1.0.0-beta5",
+    "drupal/search_api": "^1.38",
+    "league/commonmark": "^2.4"
+  }
+}

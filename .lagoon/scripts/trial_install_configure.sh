@@ -35,8 +35,8 @@ else
     --input=ai_provider_amazeeio_recipe.postgres_db_default_database=$AI_DB_NAME 
 
   # Install the recipe.
-  echo "Installing the amazee.io ck editor recipe"
-  drush recipe /app/web/recipes/amazeeio_ckeditor_widgets
+  drush recipe ../recipes/amazeeio_umami_search \
+    --input amazeeio_umami_search.postgres_db_default_database=$AI_DB_NAME
 
   # Clear the cache
   echo "Rebuilding of the Drupal cache"

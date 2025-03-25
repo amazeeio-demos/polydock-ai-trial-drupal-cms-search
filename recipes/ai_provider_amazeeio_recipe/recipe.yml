@@ -1,0 +1,103 @@
+name: Amazee.io AI Provider Install
+type: AI
+description: Automates the setup of the Amazee.io AI provider.
+install:
+  - key
+  - ai
+  - ai_provider_amazeeio
+  - ai_search
+  - search_api
+input:
+  llm_host:
+    data_type: string
+    description: The Amazee.io AI LLM Host URL.
+    prompt:
+      method: ask
+      arguments:
+        question: 'The Amazee.io AI LLM Host URL:'
+    default:
+      source: value
+      value: ''
+  llm_api_key:
+    data_type: string
+    description: The Amazee.io AI API key.
+    prompt:
+      method: ask
+      arguments:
+        question: 'The Amazee.io AI LLM API key:'
+    default:
+      source: value
+      value: ''
+  postgres_db_host:
+    data_type: string
+    description: The Amazee.io PostGreSQL host.
+    prompt:
+      method: ask
+      arguments:
+        question: 'The Amazee.io PostGreSQL host:'
+    default:
+      source: value
+      value: 'pgvector'
+  postgres_db_port:
+    data_type: integer
+    description: The Amazee.io PostGreSQL port.
+    prompt:
+      method: ask
+      arguments:
+        question: 'The Amazee.io PostGreSQL port:'
+    default:
+      source: value
+      value: '5432'
+  postgres_db_username:
+    data_type: string
+    description: The Amazee.io PostGreSQL username.
+    prompt:
+      method: ask
+      arguments:
+        question: 'The Amazee.io PostGreSQL username:'
+    default:
+      source: value
+      value: ''
+  postgres_db_password:
+    data_type: string
+    description: The Amazee.io PostGreSQL password.
+    prompt:
+      method: ask
+      arguments:
+        question: 'The Amazee.io PostGreSQL password:'
+    default:
+      source: value
+      value: ''
+  postgres_db_default_database:
+    data_type: string
+    description: The Amazee.io PostGreSQL default database.
+    prompt:
+      method: ask
+      arguments:
+        question: 'The Amazee.io PostGreSQL default database:'
+    default:
+      source: value
+      value: ''
+config:
+  import:
+    ai_provider_amazeeio:
+      - ai_provider_amazeeio.settings
+  actions:
+    key.key.amazeeio_postgres:
+      simpleConfigUpdate:
+        key_provider_settings:
+          key_value: ${postgres_db_password}
+    ai_provider_amazeeio.settings:
+      simpleConfigUpdate:
+        host: ${llm_host}
+        postgres_host: ${postgres_db_host}
+        postgres_port: ${postgres_db_port}
+        postgres_username: ${postgres_db_username}
+        postgres_default_database: ${postgres_db_default_database}
+        postgres_password: amazeeio_postgres
+      setupAiProvider:
+        key_value: ${llm_api_key}
+        key_name: amazeeio_ai
+        key_label: 'Amazee.io AI LLM API Key'
+        provider: amazeeio
+

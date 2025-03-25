@@ -1,0 +1,15 @@
+uuid: 88022d20-6dcd-4504-9609-ae2132827b54
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_db
+id: umami_database_server
+name: 'Umami Database Server'
+description: ''
+backend: search_api_db
+backend_config:
+  database: 'default:default'
+  min_chars: 1
+  matching: words
+  phrase: bigram
