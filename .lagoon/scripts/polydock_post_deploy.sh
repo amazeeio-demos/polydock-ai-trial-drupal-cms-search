@@ -50,25 +50,25 @@ if [ ! -f "$LOCKFILE" ]; then
 
   if [ ! -z "$AI_DB_HOST_NAME" ]; then
     echo "Importing amazee Private AI AI_DB_HOST_NAME"
-    echo "TODO: drush config:set ai_provider_amazeeio.settings postgres_host $AI_DB_HOST_NAME -y"
+    drush config:set ai_provider_amazeeio.settings postgres_host $AI_DB_HOST_NAME -y
     
     echo "Importing amazee Private AI AI_DB_HOST_NAME"
-    echo "TODO: drush config:set ai_provider_amazeeio.settings postgres_port 5432 -y"
+    drush config:set ai_provider_amazeeio.settings postgres_port 5432 -y
   fi;
 
   if [ ! -z "$AI_DB_USERNAME" ]; then
     echo "Importing amazee Private AI AI_DB_USERNAME"
-    echo "TODO: drush config:set ai_provider_amazeeio.settings postgres_username $AI_DB_USERNAME -y"
+    drush config:set ai_provider_amazeeio.settings postgres_username $AI_DB_USERNAME -y
   fi;
 
   if [ ! -z "$AI_DB_PASSWORD" ]; then
     echo "Importing amazee Private AI AI_DB_PASSWORD"
-    echo "TODO: drush config:set key.key.amazeeio_postgres key_provider_settings.key_value $AI_DB_PASSWORD -y"
+    drush config:set key.key.amazeeio_postgres key_provider_settings.key_value $AI_DB_PASSWORD -y
   fi;
 
   if [ ! -z "$AI_DB_NAME" ]; then
     echo "Importing amazee Private AI AI_DB_NAME"
-    echo "TODO: drush config:set ai_provider_amazeeio.settings postgres_default_database $AI_DB_NAME -y"
+    drush config:set ai_provider_amazeeio.settings postgres_default_database $AI_DB_NAME -y
   fi;
 
   if [ ! -z "$POLYDOCK_GENERATED_APP_ADMIN_USERNAME" ]; then
