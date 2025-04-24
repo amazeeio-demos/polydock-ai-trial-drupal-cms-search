@@ -2,4 +2,4 @@
 
 ULI=`drush uli 2>/dev/null`
 
-echo "$ULI?destination=/"
+echo "$ULI?destination=/en/user"
