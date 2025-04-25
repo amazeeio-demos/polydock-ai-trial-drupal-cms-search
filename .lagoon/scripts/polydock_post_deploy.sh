@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ####################################################
-# This script gets run by Polydock as a post deploy 
+# This script gets run by Polydock as a post deploy
 # over ssh. This is NOT a Lagoon post-deploy task.
 ###################################################
 
@@ -13,15 +13,15 @@ POLYDOCK_APP_IMAGE_DB_FILENAME="/app/web/sites/default/files/polydock/db-image"
 
 mkdir -p $POLYDOCK_TMP
 
-if [ -z "POLYDOCK_APP_IMAGE_URL" ]; then 
-	export POLYDOCK_APP_IMAGE_URL=$APP_IMAGE_URL_DEFAULT
+if [ -z "POLYDOCK_APP_IMAGE_URL" ]; then
+        export POLYDOCK_APP_IMAGE_URL=$APP_IMAGE_URL_DEFAULT
 fi;
 
 if [ ! -f "$LOCKFILE" ]; then
-  echo "This is the first time the script is running" 
+  echo "This is the first time the script is running"
   cd $POLYDOCK_TMP
   wget -O $POLYDOCK_APP_IMAGE_FILENAME -P $POLYDOCK_TMP $APP_IMAGE_URL_DEFAULT
-  
+
   echo "Extracing app image"
   tar -zxf $POLYDOCK_APP_IMAGE_FILENAME
 
@@ -34,7 +34,7 @@ if [ ! -f "$LOCKFILE" ]; then
     echo "Loading database image"
     cat $POLYDOCK_APP_IMAGE_DB_FILENAME | drush sql-cli
     echo "Database image loaded"
-  else 
+  else
     echo "There is no database image at: $POLYDOCK_APP_IMAGE_DB_FILENAME"
   fi;
 
@@ -48,10 +48,15 @@ if [ ! -f "$LOCKFILE" ]; then
     drush config:set ai_provider_amazeeio.settings host $AI_LLM_API_URL -y
   fi;
 
+  if [ ! -z "$AI_DB_NAME" ]; then
+    echo "Importing amazee Private AI AI_DB_NAME"
+    drush config:set ai_provider_amazeeio.settings postgres_default_database $AI_DB_NAME -y
+  fi;
+
   if [ ! -z "$AI_DB_HOST_NAME" ]; then
     echo "Importing amazee Private AI AI_DB_HOST_NAME"
     drush config:set ai_provider_amazeeio.settings postgres_host $AI_DB_HOST_NAME -y
-    
+
     echo "Importing amazee Private AI AI_DB_HOST_NAME"
     drush config:set ai_provider_amazeeio.settings postgres_port 5432 -y
   fi;
@@ -62,13 +67,9 @@ if [ ! -f "$LOCKFILE" ]; then
   fi;
 
   if [ ! -z "$AI_DB_PASSWORD" ]; then
-    echo "Importing amazee Private AI AI_DB_PASSWORD"
+    echo "Importing amazee Private AI AI_DB_PASSWORD for TWO KEYS"
     drush config:set key.key.amazeeio_postgres key_provider_settings.key_value $AI_DB_PASSWORD -y
-  fi;
-
-  if [ ! -z "$AI_DB_NAME" ]; then
-    echo "Importing amazee Private AI AI_DB_NAME"
-    drush config:set ai_provider_amazeeio.settings postgres_default_database $AI_DB_NAME -y
+    drush config:set key.key.amazeeio_ai_database key_provider_settings.key_value $AI_DB_PASSWORD -y
   fi;
 
   if [ ! -z "$POLYDOCK_GENERATED_APP_ADMIN_USERNAME" ]; then
@@ -82,7 +83,7 @@ if [ ! -f "$LOCKFILE" ]; then
     fi;
   fi;
 
-  echo "Created $LOCKFILE to ensure we don't run more than once" 
+  echo "Created $LOCKFILE to ensure we don't run more than once"
   touch $LOCKFILE
 fi;
 
@@ -90,4 +91,7 @@ cd /app
 
 echo "Now running the tasks that should run on every deploy"
 drush cr
-drush sapi-i
+drush sapi-r -y
+drush sapi-i -y
+
+
