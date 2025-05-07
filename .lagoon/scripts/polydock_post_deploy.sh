@@ -61,15 +61,21 @@ if [ ! -f "$LOCKFILE" ]; then
     drush config:set ai_provider_amazeeio.settings postgres_port 5432 -y
   fi;
 
-  if [ ! -z "$AI_DB_USERNAME" ]; then
-    echo "Importing amazee Private AI AI_DB_USERNAME"
-    drush config:set ai_provider_amazeeio.settings postgres_username $AI_DB_USERNAME -y
-  fi;
-
   if [ ! -z "$AI_DB_PASSWORD" ]; then
     echo "Importing amazee Private AI AI_DB_PASSWORD for TWO KEYS"
     drush config:set key.key.amazeeio_postgres key_provider_settings.key_value $AI_DB_PASSWORD -y
     drush config:set key.key.amazeeio_ai_database key_provider_settings.key_value $AI_DB_PASSWORD -y
+  fi;
+
+  if [ ! -z "$AI_DB_USERNAME" ]; then
+    echo "Importing amazee Private AI AI_DB_USERNAME"
+    drush config:set ai_provider_amazeeio.settings postgres_username $AI_DB_USERNAME -y
+    drush config:set search_api.server.umami_recipe_server backend_config.database_settings.database_name $AI_DB_NAME -y
+  fi;
+
+  if [ ! -z "$AI_DB_USERNAME" ]; then
+    echo "Resaving umami_recipe_server to create tables"
+    drush entity:save search_api_server umami_recipe_server
   fi;
 
   if [ ! -z "$POLYDOCK_GENERATED_APP_ADMIN_USERNAME" ]; then
@@ -92,6 +98,4 @@ cd /app
 echo "Now running the tasks that should run on every deploy"
 drush cr
 drush sapi-r -y
-drush sapi-i -y
-
-
+drush sapi-i -
