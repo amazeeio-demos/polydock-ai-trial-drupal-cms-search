@@ -5,10 +5,10 @@ COPY assets /app/assets
 RUN composer install --no-dev
 
 # Add the provider.
-RUN composer require drupal/ai_provider_amazeeio_recipe -W
+#RUN composer require drupal/ai_provider_amazeeio_recipe -W
 
 # Add the recipe
-RUN composer require drupal/amazeeio_umami_search -W
+#RUN composer require drupal/amazeeio_umami_search -W
 
 COPY . /app
 RUN mkdir -p -v -m775 /app/web/sites/default/files
