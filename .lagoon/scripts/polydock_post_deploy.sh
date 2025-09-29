@@ -6,7 +6,7 @@
 ###################################################
 
 LOCKFILE="/app/web/sites/default/files/.polydock_post_deploy"
-APP_IMAGE_URL_DEFAULT="https://nginx.main.ai-trial-storage.us2.amazee.io/storage/search/app-data-image.tgz"
+APP_IMAGE_URL_DEFAULT="https://nginx.main.ai-trial-storage.us2.amazee.io/storage/search/app-data-image-1.1.tgz"
 POLYDOCK_APP_IMAGE_FILENAME="polydock_post_deploy_image.tgz"
 POLYDOCK_TMP="/tmp/polydock_post_deploy"
 POLYDOCK_APP_IMAGE_DB_FILENAME="/app/web/sites/default/files/polydock/db-image"
@@ -14,7 +14,7 @@ POLYDOCK_APP_IMAGE_DB_FILENAME="/app/web/sites/default/files/polydock/db-image"
 mkdir -p $POLYDOCK_TMP
 
 if [ -z "POLYDOCK_APP_IMAGE_URL" ]; then
-        export POLYDOCK_APP_IMAGE_URL=$APP_IMAGE_URL_DEFAULT
+  export POLYDOCK_APP_IMAGE_URL=$APP_IMAGE_URL_DEFAULT
 fi;
 
 if [ ! -f "$LOCKFILE" ]; then
@@ -31,6 +31,8 @@ if [ ! -f "$LOCKFILE" ]; then
   cd /app
 
   if [ -f "$POLYDOCK_APP_IMAGE_DB_FILENAME" ]; then
+    echo "Removing collation from DB ..."
+    sed -i 's/COLLATE=utf8mb4_uca1400_ai_ci //g' $POLYDOCK_APP_IMAGE_DB_FILENAME
     echo "Loading database image"
     cat $POLYDOCK_APP_IMAGE_DB_FILENAME | drush sql-cli
     echo "Database image loaded"
